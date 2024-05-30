@@ -1,0 +1,398 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="csrf-token" content="{% csrf_token %}">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Mobilekit Mobile UI Kit</title>
+    <meta name="description" content="Mobilekit HTML Mobile UI Kit">
+    <meta name="keywords" content="bootstrap 5, mobile template, cordova, phonegap, mobile, html" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        #appCapsule {
+            min-height: 70px; 
+        }
+
+        .element {
+            background: linear-gradient(to right, black 30%, #7df0d3 100%);
+        }
+
+        .my_act_button {
+            background: #64e3c2 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <!-- * loader -->
+
+    <div class="appHeader element ">
+        
+            <div class="pageTitle" align="left">
+                <img src="{% static '/images/logo2.png' %}" alt="image" width="70">
+            </div>
+        
+        <!-- <div class="right">
+            <a href="#" class="headerButton">
+                <ion-icon name="mail-outline"></ion-icon>
+            </a>
+        </div> -->
+    </div>
+    <br><br>
+
+    <!-- App Capsule -->
+    <div id="appCapsule" class="pt-2">
+
+        <!--stories -->
+        {% if followers %}
+
+            {% if follower_post_stories %}
+            <div class="section full">
+                <div class="wide-block p-0 pt-2 pb-2">
+                    <!-- story-block -->
+                    <div class="story-block splide">
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                                {% for user, story in follower_stories.items %}
+                                <!-- <p>{{ user.id }}</p> -->
+                                <li class="splide__slide {% if story.id in seen_stories %} passive{% endif %}">
+                                    <a href="#" class="story" id="story{{ user.id }}" data-story-id="{{ story.id }}" data-bs-toggle="modal" data-component="stories" data-time="5000"
+                                        data-bs-target="#StoriesModal{{ user.id }}">
+                                        {% if user.profile_picture %}
+                                        <img src="media/{{ user.profile_picture }}" alt="alt" class="imaged w-100 rounded">
+                                        {% else %}
+                                        <img src="{% static 'assets/img/sample/avatar/avatar5.jpg' %}" alt="alt" class="imaged w-100 rounded">
+                                        {% endif %}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                                <!-- <li class="splide__slide passive">
+                                    <img src="{% static 'assets/img/sample/avatar/avatar5.jpg' %}" alt="alt" class="imaged w-100 rounded">
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- * story-block -->
+                </div>
+            </div>
+            {% else %}
+
+            <div class="section full">
+                <div class="wide-block p-0 pt-2 pb-2">
+                    <center>No stories posted</center>
+                </div>
+            </div>
+            {% endif %}
+
+        {% else %}
+
+        <div class="section full">
+            <div class="wide-block pt-3 pb-2">
+                <div class="alert alert-outline-primary mb-1" role="alert">
+                    You haven't follow anyone yet—check them out!
+                </div>
+
+                
+                <div class="carousel-multiple splide pt-3">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            {% for user in who_to_follow %}
+                            <li class="splide__slide">
+                                <div class="card product-card">
+                                    <div class="card-body">
+                                        {% if user.profile_picture %}
+                                            <img src="media/{{ user.profile_picture }}" class="image" alt="product image">
+                                        {% else %}
+                                            <img src="{% static 'assets/img/sample/avatar/avatar5.jpg' %}" class="image" alt="product image">
+                                        {% endif %}
+                                        <h2 class="title text-center">{{ user.name }}</h2>
+                                        <br>
+                                        <a href="{% url 'my_profile:other_profile' user.id|slugify %}" class="btn btn-sm btn-primary btn-block">See more</a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+            </div>
+        </div>
+
+        {% endif %}
+        <!-- <p>{{ follower_stories }}</p>
+    <p> {{ follower.user_id.id }}</p> -->
+        
+        {% for user, story in follower_stories.items %}
+        <div class="modal fade stories" id="StoriesModal{{ user.id }}" data-bs-backdrop="static" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!-- <div class="story-bar"></div> -->
+                    <div class="story-image">
+                        <img src="media/{{ story.file }}" alt="image">
+                    </div>
+                    <div class="modal-header">
+                        <a href="#" class="profile-detail">
+                            {% if user.profile_picture %}
+                                <img src="media/{{ user.profile_picture }}" alt="avatar" class="imaged w36 rounded me-1">
+                            {% else %}
+                                <img src="{% static 'assets/img/sample/avatar/avatar1.jpg' %}" alt="avatar" class="imaged w36 rounded me-1">
+                            {% endif %}
+                            <div>
+                                <h4>{{ user.name }}</h4>
+                            </div>
+                        </a>
+                        <a href="#" data-bs-dismiss="modal" class="close-stories">
+                            <ion-icon name="close"></ion-icon>
+                        </a>
+                    </div>
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>   
+        {% endfor %}
+
+        
+
+        <!-- the modals here -->
+
+        {% for post in posts %}
+
+        {% csrf_token %}
+
+        <div class="blog-post">
+            <div class="mb-2">
+                <img src="media/{{ post.file_1 }}" alt="image" class="imaged square w-100">
+            </div>
+            <div class="post-header">
+                <div>
+                    <a href="#">
+                        {% if post.insert_by.profile_picture %}
+                            <img src="media/{{ post.insert_by.profile_picture }}" alt="avatar" class="imaged w24 rounded me-05">
+                        {% else %}
+                        <img src="{% static 'assets/img/sample/avatar/avatar1.jpg' %}" alt="avatar" class="imaged w24 rounded me-05">
+                        {% endif %}
+                        
+                        {{post.insert_by.name}}
+                    </a>
+                </div>
+                {{post.insert_datetime}}
+            </div>
+            <div class="post-body">
+                <h4>{{post.name}}</h4>
+                <p>
+                    {{post.caption}}
+                </p>
+                <p>
+                    <a href="{% url 'explore:scroll_post' post.id|slugify %}">See more...</a>
+                    <!-- <a href="#" class="comment-button like_btn" data-post-id="{{ post.id }}">
+                        <ion-icon name="heart-outline" class="like_icon"></ion-icon>
+                        <span class="like_num">{{ post.like_count }}</span>
+                    </a>
+                    <a href="#" class="comment-button cmt_btn">
+                        <ion-icon name="chatbubble-outline" class="btn_icon"></ion-icon>
+                        <span id="cmt_num">{{post.comment_count}}</span>
+                    </a> -->
+                </p>
+                <br>
+            </div>
+        </div>
+
+        {% endfor %}
+
+        <br>
+
+
+
+
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- App Bottom Menu -->
+    <div class="appBottomMenu">
+        <a href="{% url 'home:home' %}" class="item">
+            <div class="col">
+                <ion-icon name="home-outline"></ion-icon>
+            </div>
+        </a>
+        <a href="{% url 'explore:explore' %}" class="item">
+            <div class="col">
+                <ion-icon name="search-outline"></ion-icon>
+            </div>
+        </a>
+        <a href="#" class="item" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefault">
+            <div class="col ">
+                <div class="action-button large my_act_button">
+                    <ion-icon name="add-outline" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+                </div>
+            </div>
+        </a>
+        <a href="{% url 'chat:index' %}" class="item">
+            <div class="col">
+                <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+            </div>
+        </a>
+        <a href="{% url 'my_profile:profile' %}" class="item">
+            <div class="col">
+                <ion-icon name="person-outline"></ion-icon>
+            </div>
+        </a>
+    </div>
+    <!-- * App Bottom Menu -->
+
+    <!-- Default Action Sheet -->
+<div class="offcanvas offcanvas-bottom action-sheet" tabindex="-1" id="actionSheetDefault">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Action</h5>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="action-button-list">
+            <!-- <li>
+                <a href="#" class="btn btn-list text-primary" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li> -->
+            <li>
+                <a href="{% url 'explore:create_post' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'explore:create_story' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Story</span>
+                </a>
+            </li>
+            <li class="action-divider"></li>
+            <li>
+                <a href="#" class="btn btn-list text-danger" data-bs-dismiss="offcanvas">
+                    <span>Close</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- * Default Action Sheet -->
+
+<script>
+    $(document).ready(function() {
+
+        const my_csrftoken = '{% csrf_token %}';
+
+        $('.btn-list').on('click', function() {
+            var url = $(this).attr('href');
+            window.location.href = url;
+        });
+
+        $('.story').on('click', function() {
+            let story_id = $(this).data('story-id');
+            console.log(story_id);
+
+            $('.story').on('click', function() {
+                let story_id = $(this).data('story-id');
+                var $this = $(this); // Store reference to this
+                
+                $.ajax({
+                    type: 'POST',
+                    url: "{% url 'general_process:seen_story' %}",
+                    data: {
+                        'story_id': story_id
+                    },
+                    success: function(response) {
+                        console.log(response.message);
+                        console.log($this.closest('.splide__slide')); // Use stored reference
+                        $this.closest('.splide__slide').addClass('passive');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+        });
+    });
+</script>
+
+
+    <script>
+        console.log('active!');
+
+        let like_btn = document.querySelector('.like_btn');
+        let like_icon = document.querySelector('.like_icon');
+        let like_num = document.querySelector('#like_num');
+        let comment_btn = document.querySelector('.cmt_btn');
+        let comment_num = document.querySelector('#cmt_num');
+        const csrftoken = '{% csrf_token %}';
+        console.log(csrftoken);
+        const postId = '{{ post.id }}';
+        const likeUrl = '{% url "general_process:like" 0 %}'.replace('0', postId);
+
+        document.querySelectorAll('.like_btn').forEach(btn => {
+            btn.addEventListener('click', function(event) {
+                event.preventDefault();
+                const postId = this.getAttribute('data-post-id');
+                const likeNum = this.querySelector('.like_num');
+                fetch("{% url 'general_process:like' 0 %}".replace('0', postId), {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                    console.log(data);
+                    if (data.success) {
+                         like_icon.classList.add('text-danger');
+                         like_icon.setAttribute('name', 'heart');
+                         like_num.textContent = parseInt(like_num.textContent) + 1;
+                    } else {
+                        like_icon.classList.remove('text-danger');
+                        like_icon.setAttribute('name', 'heart-outline');
+                        like_num.textContent = parseInt(like_num.textContent) - 1;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+
+    </script>
+
+
+    <!-- ============== Js Files ==============  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- ProgressBar js -->
+    <script src="{% static 'assets/js/plugins/progressbar-js/progressbar.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+
+</body>
+
+</html>

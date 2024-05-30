@@ -1,0 +1,131 @@
+{% extends "my_profile/base.html" %}
+{% load static %}
+
+{% block header %}
+
+<div class="appHeader element text-light">
+
+    <div class="pageTitle">
+        <div class="pageTitle" align="left">
+            <img src="{% static '/images/logo2.png' %}" alt="image" width="70">
+        </div>
+    </div>
+    <div class="left mt-1">
+        <a href="{% url 'my_profile:profile' %}" class="headerButton goBack">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+        </a>
+    </div>
+    <!-- <div class="right">
+        <a href="#" class="headerButton">
+            <ion-icon name="mail-outline"></ion-icon>
+        </a>
+        <a href="#" class="headerButton">
+            <ion-icon name="person-add-outline"></ion-icon>
+        </a>
+    </div> -->
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="section mt-2">
+
+    {% if followings  %}
+    <!-- tab content -->
+    <ul class="listview image-listview">
+        {% for following in followings %}
+        <li> 
+            <!--  -->
+            <a href="" class="item">
+                {% if following.user_id.profile_picture %}
+                    <img src="media/{{ following.user_id.profile_picture }}" alt="image" class="image">
+                {% else %}
+                    <img src="{% static 'assets/img/sample/avatar/avatar3.jpg' %}" alt="image" class="image">
+                {% endif %}
+                <div class="in">
+                    <div>{{ following.user_id.name }}</div>
+                    <span class="text-muted">{{following.user_id.follower_count}} follower</span>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <!-- * tab content -->
+    {% else %}
+    <p class="text-center">You haven't follow anyone yet.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
+
+
+{% block app_bottom %}
+
+<div class="appBottomMenu">
+    <a href="{% url 'home:home' %}" class="item">
+        <div class="col">
+            <ion-icon name="home-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="{% url 'explore:explore' %}" class="item">
+        <div class="col">
+            <ion-icon name="search-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="#" class="item" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefault">
+        <div class="col">
+            <div class="action-button my_act_button large">
+                <ion-icon name="add-outline" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+            </div>
+        </div>
+    </a>
+    <a href="{% url 'chat:index' %}" class="item">
+        <div class="col">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="{% url 'my_profile:profile' %}" class="item">
+        <div class="col">
+            <ion-icon name="person-outline"></ion-icon>
+        </div>
+    </a>
+</div>
+
+<!-- Default Action Sheet -->
+<div class="offcanvas offcanvas-bottom action-sheet" tabindex="-1" id="actionSheetDefault">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Action</h5>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="action-button-list">
+            <!-- <li>
+                <a href="#" class="btn btn-list text-primary" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li> -->
+            <li>
+                <a href="{% url 'explore:create_post' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'explore:create_story' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Story</span>
+                </a>
+            </li>
+            <li class="action-divider"></li>
+            <li>
+                <a href="#" class="btn btn-list text-danger" data-bs-dismiss="offcanvas">
+                    <span>Close</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- * Default Action Sheet -->
+
+{% endblock %}
+

@@ -1,0 +1,55 @@
+{% extends "my_profile/base.html" %}
+{% load static %}
+
+{% block header %}
+
+<div class="appHeader element text-light">
+
+    <div class="pageTitle">
+        <div class="pageTitle" align="left">
+            <img src="{% static '/images/logo2.png' %}" alt="image" width="70">
+        </div>
+    </div>
+    <div class="left mt-1">
+        <a href="{% url 'explore:explore' %}" class="headerButton goBack">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+        </a>
+    </div>
+    <!-- <div class="right">
+        <a href="#" class="headerButton">
+            <ion-icon name="mail-outline"></ion-icon>
+        </a>
+        <a href="#" class="headerButton">
+            <ion-icon name="person-add-outline"></ion-icon>
+        </a>
+    </div> -->
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="section">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <br>
+
+        <div class="form-group boxed">
+            <div class="input-wrapper">
+                <label for="email3">Please report everything about this user, we will review it throughly to make sure your report is valid</label>
+                <textarea name="report_content" id="email3" class="form-control mt-3"></textarea>   
+                <i class="clear-input">
+                    <ion-icon name="close-circle"></ion-icon>
+                </i>
+            </div>
+        </div>
+
+        <br><br>
+        <div class="form-button-group">
+            <button type="submit" class="btn my_act_button text-white btn-block btn-lg">Send</button>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

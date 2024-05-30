@@ -1,0 +1,400 @@
+{% extends "my_profile/base.html" %}
+{% load static %}
+
+{% block header %}
+
+<div class="appHeader element text-light">
+
+    <div class="pageTitle">
+        <div class="pageTitle" align="left">
+            <img src="{% static '/images/logo2.png' %}" alt="image" width="70">
+        </div>
+    </div>
+    <div class="left mt-1">
+        <a href="{% url 'explore:explore' %}" class="headerButton goBack">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+        </a>
+    </div>
+    <!-- <div class="right">
+        <a href="#" class="headerButton">
+            <ion-icon name="mail-outline"></ion-icon>
+        </a>
+        <a href="#" class="headerButton">
+            <ion-icon name="person-add-outline"></ion-icon>
+        </a>
+    </div> -->
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="section mt-4">
+    <div class="profile-head">
+        <div class="avatar">
+            {% if user.profile_picture %}
+                <img src="media/{{ user.profile_picture }}" alt="avatar" class="imaged w64 rounded">
+            {% else %}
+                <img src="{% static 'assets/img/sample/avatar/avatar3.jpg' %}" alt="avatar" class="imaged w64 rounded">
+            {% endif %}
+        </div>
+        <div class="in">
+            <h3 class="name">{{ user.name }}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="section mt-2 mb-2">
+    <div class="profile-info">
+
+        {% if user.description %}
+        <div class=" bio" style="text-align: justify;">
+            {{ user.description }}
+        </div>
+        {% endif %}
+<!--                <div class="link">-->
+<!--                    <a href="#">Paris</a>,-->
+<!--                    <a href="#">France</a>-->
+<!--                </div>-->
+    </div>
+</div>
+
+<div class="section full mt-2 mb-2">
+    <div class="profile-stats ps-2 pe-2">
+        <a href=""></a>
+        <a href="#" class="item">
+            <strong>{{ post_count }}</strong>posts
+        </a>
+        <a href="#" class="item">
+            <strong>{{ user.follower_count }}</strong>followers
+        </a>
+        <a href="#" class="item">
+            <strong>{{ user.following_count }}</strong>following
+        </a>
+        <a href=""></a>
+    </div>
+</div>
+
+<div class="section mt-2 mb-2">
+    <div class="row">
+        <!-- <div class="col-sm-6 mb-1">
+            <button type="button" class="btn btn-primary btn-block">Chat</button>
+        </div> -->
+        {% if is_following %}
+            <div class="col-sm-6 mb-1">
+                <a href="{% url 'general_process:follow' user.id|slugify  %}" class="btn btn-secondary btn-block">Unfollow</a>
+            </div>
+        {% else %}
+            <div class="col-sm-6 mb-1">
+                <a href="{% url 'general_process:follow' user.id|slugify  %}" class="btn my_act_button text-white btn-block">Follow</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="section full">
+    <div class="wide-block transparent p-0">
+        <ul class="nav nav-tabs lined iconed" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#feed" role="tab">
+                    <ion-icon name="grid-outline"></ion-icon>
+                </a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#bookmarks" role="tab">
+                    <ion-icon name="bookmark-outline"></ion-icon>
+                </a>
+            </li> -->
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#settings" role="tab">
+                    <ion-icon name="settings-outline"></ion-icon>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!-- tab content -->
+<div class="section full mb-2">
+            <div class="tab-content">
+
+                <!-- feed -->
+                <div class="tab-pane fade show active" id="feed" role="tabpanel">
+                    <div class="mt-2 p-2 pt-0 pb-0">
+                        <div class="row">
+
+                            {% for post in posts %}
+
+                            <div class="col-4 mb-2">
+                                <a href="{% url 'explore:scroll_post' post.id|slugify %}">
+                                    <img src="media/{{ post.file_1 }}" alt="image" class="imaged w-100 h-100">
+
+                                </a>
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- * feed -->
+
+                <!-- * friends -->
+                <div class="tab-pane fade" id="friends" role="tabpanel">
+                    <ul class="listview image-listview flush transparent pt-1">
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar3.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Edward Lindgren
+                                        <div class="text-muted">532 followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar2.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Emelda Scandroot
+                                        <div class="text-muted">120k followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar5.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Henry Bove
+                                        <div class="text-muted">920k followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar4.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Ava Gregoraci
+                                        <div class="text-muted">5092 followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar6.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Emmy Elsner
+                                        <div class="text-muted">92 followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar7.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Lisanne Viscaal
+                                        <div class="text-muted">893 followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar10.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Cecilia Pozo
+                                        <div class="text-muted">51k followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- * friends -->
+
+                <!--  bookmarks -->
+                <div class="tab-pane fade" id="bookmarks" role="tabpanel">
+                    <ul class="listview image-listview media flush transparent pt-1">
+                        <li>
+                            <a href="#" class="item">
+                                <div class="imageWrapper">
+                                    <img src="{% static 'assets/img/sample/photo/1.jpg' %}" alt="image" class="imaged w64">
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        Birds
+                                        <div class="text-muted">62 photos</div>
+                                    </div>
+                                    <span class="badge badge-primary">5</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <div class="imageWrapper">
+                                    <img src="{% static 'assets/img/sample/photo/2.jpg' %}" alt="image" class="imaged w64">
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        Street Photos
+                                        <div class="text-muted">15 photos</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <div class="imageWrapper">
+                                    <img src="{% static 'assets/img/sample/photo/3.jpg' %}" alt="image" class="imaged w64">
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        Dogs
+                                        <div class="text-muted">97 photos</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <div class="imageWrapper">
+                                    <img src="{% static 'assets/img/sample/photo/4.jpg' %}" alt="image" class="imaged w64">
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        Favorites
+                                        <div class="text-muted">20 photos</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <div class="imageWrapper">
+                                    <img src="{% static 'assets/img/sample/photo/5.jpg' %}" alt="image" class="imaged w64">
+                                </div>
+                                <div class="in">
+                                    <div>
+                                        Nature
+                                        <div class="text-muted">51 photos</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- * bookmarks -->
+
+                <!-- settings -->
+                <div class="tab-pane fade" id="settings" role="tabpanel">
+                    <ul class="listview image-listview text flush transparent pt-1">
+
+                        <li>
+                            <a href="{% url 'my_profile:report' user.id|slugify  %}" class="item">
+                                <div class="in">
+                                    <div>Report</div>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- * settings -->
+            </div>
+        </div>
+<!-- * tab content -->
+
+{% endblock %}
+
+{% block app_bottom %}
+
+<div class="appBottomMenu">
+    <a href="{% url 'home:home' %}" class="item">
+        <div class="col">
+            <ion-icon name="home-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="{% url 'explore:explore' %}" class="item">
+        <div class="col">
+            <ion-icon name="search-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="#" class="item" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefault">
+        <div class="col">
+            <div class="action-button my_act_button large">
+                <ion-icon name="add-outline" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+            </div>
+        </div>
+    </a>
+    <a href="{% url 'chat:index' %}" class="item">
+        <div class="col">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="{% url 'my_profile:profile' %}" class="item">
+        <div class="col">
+            <ion-icon name="person-outline"></ion-icon>
+        </div>
+    </a>
+</div>
+
+<!-- Default Action Sheet -->
+<div class="offcanvas offcanvas-bottom action-sheet" tabindex="-1" id="actionSheetDefault">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Action</h5>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="action-button-list">
+            <!-- <li>
+                <a href="#" class="btn btn-list text-primary" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li> -->
+            <li>
+                <a href="{% url 'explore:create_post' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'explore:create_story' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Story</span>
+                </a>
+            </li>
+            <li class="action-divider"></li>
+            <li>
+                <a href="#" class="btn btn-list text-danger" data-bs-dismiss="offcanvas">
+                    <span>Close</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- * Default Action Sheet -->
+
+{% endblock %}
+
+{% block js_script %}
+    
+<script>
+    $(document).ready(function() {
+        $('.btn-list').on('click', function() {
+            var url = $(this).attr('href');
+            window.location.href = url;
+        });
+    });
+</script>
+
+{% endblock %}

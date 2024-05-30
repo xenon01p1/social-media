@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Now{% endblock %}
+{% block subtitle %}We sent a verification code to your email{% endblock %}
+
+
+{% block inputs %}
+
+    <div class="form-group boxed">
+        <div class="input-wrapper">
+            <input name="otp_code" type="text" class="form-control verify-input" id="smscode" placeholder="••••" maxlength="4" autocomplete="off">
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block links %} 
+{% endblock %}
+
+
+{% block submit_btn %} 
+
+    <div class="form-button-group">
+        <button type="submit" class="btn my_act_button text-white btn-block btn-lg">Verify</button>
+    </div>
+
+{% endblock %}
+
+
+{% block check %} 
+        
+{% if not success %}
+
+<div id="notification-6" class="notification-box show">
+    <div class="notification-dialog android-style">
+        <div class="notification-header">
+            <div class="in">
+                <strong>Notification</strong>
+                <span>just now</span>
+            </div>
+            <a href="#" class="close-button">
+                <ion-icon name="close" role="img" class="md hydrated" aria-label="close"></ion-icon>
+            </a>
+        </div>
+        <div class="notification-content">
+            <div class="in">
+                <h3 class="subtitle">{{toast_message}}</h3>
+                <div class="text">
+                    {{sub_message}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

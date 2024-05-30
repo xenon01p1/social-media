@@ -1,0 +1,100 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Mobilekit Mobile UI Kit</title>
+    <meta name="description" content="Mobilekit HTML Mobile UI Kit">
+    <meta name="keywords" content="bootstrap 5, mobile template, cordova, phonegap, mobile, html" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+    <script src="{% static 'assets/js/lib/jquery_3.7.1.js' %}"></script>
+    <style>
+        .story-indicator {
+            border: 3px solid #1E74FD; /* White border to blend with the background */
+            border-radius: 50%; /* Make it circular */
+            padding: 3px; /* Add padding to create space */
+            display: inline-block; /* Ensure the container only takes up as much space as needed */
+        }
+    
+        .story-indicator-inner {
+            border: 3px solid white; /* Blue border */
+            border-radius: 50%; /* Make it circular */
+            display: inline-block; /* Ensure the container only takes up as much space as needed */
+        }
+
+        #appCapsule {
+            min-height: 70px; 
+        }
+
+        .element {
+            background: linear-gradient(to right, black 30%, #7df0d3 100%);
+        }
+
+        .my_act_button {
+            background: #64e3c2 !important;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+
+    <!-- loader -->
+    <div id="loader">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    {% block header %}
+    {% endblock %}
+    <!-- * App Header -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+        {% block content %}
+        {% endblock %}
+
+        {% block check %} 
+        {% endblock %}
+
+    </div>
+    <!-- * App Capsule -->
+
+    <!-- App Bottom Menu -->
+    {% block app_bottom %}
+    {% endblock %}
+
+    <!-- * App Bottom Menu -->
+
+    {% block js_script %}
+    {% endblock %}
+
+
+    <!-- ============== Js Files ==============  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- ProgressBar js -->
+    <script src="{% static 'assets/js/plugins/progressbar-js/progressbar.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+
+</body>
+
+</html>

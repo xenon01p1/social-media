@@ -1,0 +1,82 @@
+{% extends "explore/base.html" %}
+{% load static %}
+{% block title %}Discovery{% endblock %} 
+
+{% block header %}
+    
+    <div class="appHeader element text-light">
+        <div class="left mt-1">
+            <a href="#" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <div class="pageTitle">
+            <div class="pageTitle" align="left">
+                <img src="{% static '/images/logo2.png' %}" alt="image" width="70">
+            </div>
+        </div>
+        <div class="right mt-1">
+            <a href="{% url 'explore:create_category_favorite' %}" class="headerButton">
+                <ion-icon name="add-outline"></ion-icon>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block content %}
+
+<!-- tab content -->
+
+<ul class="listview image-listview media flush transparent pt-2">
+
+    {% if category_favorite %}
+
+    {% for category in category_favorite %}
+
+    <li>
+        <a href="{% url 'general_process:favorite' category.id post_id %}" class="item">
+            <div class="imageWrapper">
+                <img src="{% static 'assets/img/sample/photo/1.jpg' %}" alt="image" class="imaged w64">
+            </div>
+            <div class="in">
+                <div>
+                    {{category.name}}
+                    <div class="text-muted">{{category.category_count}} post(s)</div>
+                </div>
+            </div>
+        </a>
+    </li>
+
+    {% endfor %}
+
+    {% else %}
+
+    <li class="p-2">
+        <div class="alert alert-outline-primary alert-dismissible fade show" role="alert">
+            <h4 class="alert-title">Hmmm...</h4>
+            You haven't made any categories yet
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </li>
+
+    {% endif %}
+    
+</ul>
+
+<!-- * tab content -->
+
+{% endblock %} 
+
+{% block js_content %}
+
+<script>
+    document.querySelector('.goBack').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        window.history.back(); // Go back to the previous page
+    });
+</script>
+
+{% endblock %} 
+    

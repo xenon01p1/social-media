@@ -1,0 +1,105 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>{{page_title}}</title>
+    <meta name="description" content="Mobilekit HTML Mobile UI Kit">
+    <meta name="keywords" content="bootstrap 5, mobile template, cordova, phonegap, mobile, html" />
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.png' %}" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/img/icon/192x192.png' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <link rel="manifest" href="{% static '__manifest.json' %}">
+    <style>
+        #appCapsule {
+            min-height: 70px; 
+        }
+
+        .element {
+            background: linear-gradient(to right, black 30%, #7df0d3 100%);
+        }
+
+        .my_act_button {
+            background: #64e3c2 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <!-- * loader -->
+
+    <!-- <div class="appHeader bg-primary text-light">
+        <div class="pageTitle">Home</div>
+        <div class="right">
+            <a href="#" class="headerButton">
+                <ion-icon name="mail-outline"></ion-icon>
+            </a>
+        </div>
+    </div> -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div class="login-form mt-1">
+            <div class="section">
+                <img src="{% static '/images/Storyline.png' %}" alt="image" class="form-image">
+            </div>
+            <div class="section mt-1">
+                <h1>{% block title %}{% endblock %}</h1>
+                <h4>{% block subtitle %}{% endblock %}</h4>
+            </div>
+            <div class="section mt-1 mb-5">
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    {% block inputs %} 
+                    {% endblock %}
+
+                    {% block links %} 
+                    {% endblock %}
+
+                    {% block submit_btn %} 
+                    {% endblock %}
+
+                </form>
+            </div>
+        </div>
+
+        {% block check %} 
+        {% endblock %}
+
+    </div>
+    <!-- * App Capsule -->
+
+
+   
+    <!-- ============== Js Files ==============  -->
+    <!-- Bootstrap -->
+    <script src="{% static 'assets/js/lib/bootstrap.min.js' %}"></script>
+    <!-- Ionicons -->
+    <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <!-- Splide -->
+    <script src="{% static 'assets/js/plugins/splide/splide.min.js' %}"></script>
+    <!-- ProgressBar js -->
+    <script src="{% static 'assets/js/plugins/progressbar-js/progressbar.min.js' %}"></script>
+    <!-- Base Js File -->
+    <script src="{% static 'assets/js/base.js' %}"></script>
+
+
+</body>
+
+</html>

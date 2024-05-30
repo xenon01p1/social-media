@@ -1,0 +1,238 @@
+{% extends "explore/base.html" %}
+{% load static %}
+{% block title %}Discovery{% endblock %} 
+
+<!-- 
+
+Direct ForeignKey Relationship: When you have a ForeignKey field in a model that directly points to another model, Django automatically
+creates an attribute with the name of that ForeignKey field. This attribute directly holds the related object. For example, if you have
+a ForeignKey field named posts in your Favorites model that points to the Posts model, you can directly access the related Posts object 
+using favorite.posts.
+
+Reverse ForeignKey Relationship: When you have a ForeignKey relationship from one model to another, Django automatically creates a 
+reverse relationship from the referenced model back to the referring model. This reverse relationship is named by default as 
+<model_name>_set. It represents a set of objects related to the referring model. For example, if you have a ForeignKey from 
+CategoryFavorites to Favorites, Django creates a reverse relationship from CategoryFavorites to Favorites called favorites_set. 
+You access the related objects through this reverse relationship using _set.
+
+
+ -->
+
+{% block header %}
+    
+    <div class="appHeader bg-primary text-light">
+        <div class="pageTitle">{{category_name}}</div>
+        <div class="left">
+            <a href="{% url 'my_profile:profile' %}" class="headerButton goBack">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </a>
+        </div>
+        <!-- <div class="right">
+            <a href="#" class="headerButton">
+                <ion-icon name="mail-outline"></ion-icon>
+            </a>
+        </div> -->
+    </div>
+
+{% endblock %}
+
+
+{% block content %}
+
+<!-- tab content -->
+<div class="section full mb-2">
+    <div class="tab-content">
+
+        <!-- feed -->
+        <div class="tab-pane fade show active" id="feed" role="tabpanel">
+            <div class="mt-2 p-2 pt-0 pb-0">
+                <div class="row">
+                
+                {%if favorites%}
+                    {% for favorite in favorites %}
+
+                    <div class="col-4 mb-2">
+                        <a href="{% url 'explore:scroll_post' favorite.posts_id|slugify %}">
+                            {% if favorite.posts_id %}
+                                <img src="media/{{ favorite.posts_id.file_1 }}" alt="image" class="imaged w-100 h-100">
+                            {% else %}
+                                <!-- Display a default image if no post is associated with this favorite -->
+                                <img src="{% static 'assets/img/sample/photo/1.jpg' %}" alt="default image" class="imaged w-100 h-100">
+                            {% endif %}
+                        </a>
+                    </div>
+                    
+
+                    {% endfor %}
+
+                {% else %}
+                    
+                    <p>No post saved in this category yet</p>
+                    
+
+                {% endif %}
+                    
+                </div>
+            </div>
+            <!-- <div class="p-2 pt-0 pb-0">
+                <a href="#" class="btn btn-primary btn-block">More Photo</a>
+            </div> -->
+        </div>
+        <!-- * feed -->
+
+        
+        <!-- settings -->
+        <div class="tab-pane fade " id="settings" role="tabpanel">
+            <ul class="listview image-listview text flush transparent pt-1">
+                <li>
+                    <div class="item">
+                        <div class="in">
+                            <div>
+                                Mute
+                                <footer>Disabled notifications from this person</footer>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="SwitchCheckDefault1">
+                                <label class="form-check-label" for="SwitchCheckDefault1"></label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="#" class="item">
+                        <div class="in">
+                            <div class="text-danger">Block</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="item">
+                        <div class="in">
+                            <div>Report</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="item">
+                        <div class="in">
+                            <div>Share This Profile</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="item">
+                        <div class="in">
+                            <div>Send a Message</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="item">
+                        <div class="in">
+                            <div>Add to List</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="item">
+                        <div class="in">
+                            <div>About</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="item">
+                        <div class="in">
+                            <div>Ignore</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- * settings -->
+    </div>
+</div>
+<!-- * tab content -->
+
+{% endblock %} 
+
+
+{% block bottom_menu %}
+<div class="appBottomMenu">
+        <a href="{% url 'home:home' %}" class="item">
+            <div class="col">
+                <ion-icon name="home-outline"></ion-icon>
+            </div>
+        </a>
+        <a href="{% url 'explore:explore' %}" class="item">
+            <div class="col">
+                <ion-icon name="search-outline"></ion-icon>
+            </div>
+        </a>
+        <a href="#" class="item" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefault">
+            <div class="col">
+                <div class="action-button large">
+                    <ion-icon name="add-outline" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+                </div>
+            </div>
+        </a>
+        <a href="{% url 'chat:index' %}" class="item">
+            <div class="col">
+                <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+            </div>
+        </a>
+        <a href="{% url 'my_profile:profile' %}" class="item">
+            <div class="col">
+                <ion-icon name="person-outline"></ion-icon>
+            </div>
+        </a>
+    </div> 
+
+<!-- Default Action Sheet -->
+<div class="offcanvas offcanvas-bottom action-sheet" tabindex="-1" id="actionSheetDefault">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Action</h5>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="action-button-list">
+            <!-- <li>
+                <a href="#" class="btn btn-list text-primary" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li> -->
+            <li>
+                <a href="{% url 'explore:create_post' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'explore:create_story' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Story</span>
+                </a>
+            </li>
+            <li class="action-divider"></li>
+            <li>
+                <a href="#" class="btn btn-list text-danger" data-bs-dismiss="offcanvas">
+                    <span>Close</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- * Default Action Sheet -->
+{% endblock %}
+
+{% block js_content %}
+    
+<script>
+    $(document).ready(function() {
+        $('.btn-list').on('click', function() {
+            var url = $(this).attr('href');
+            window.location.href = url;
+        });
+    });
+</script>
+
+{% endblock %}
+
+    

@@ -1,0 +1,433 @@
+{% extends "my_profile/base.html" %}
+{% load static %}
+
+{% block header %}
+
+<div class="appHeader element text-light">
+
+    <div class="pageTitle">
+        <div class="pageTitle" align="left">
+            <img src="{% static '/images/logo2.png' %}" alt="image" width="70">
+        </div>
+    </div>
+    <!-- <div class="left">
+        <a href="{% url 'explore:explore' %}" class="headerButton goBack">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+        </a>
+    </div> -->
+    <!-- <div class="right">
+        <a href="#" class="headerButton">
+            <ion-icon name="mail-outline"></ion-icon>
+        </a>
+        <a href="#" class="headerButton">
+            <ion-icon name="person-add-outline"></ion-icon>
+        </a>
+    </div> -->
+    <!-- <div class="right dropdown">
+        <a href="#" class="headerButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <ion-icon name="add-outline" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+        </a>
+        <div class="dropdown-menu dropdown-menu-end" >
+            <a class="dropdown-item" href="#">Create Post</a>
+            <a class="dropdown-item" href="#">Create Story</a>
+            <a class="dropdown-item" href="#">Share</a>
+        </div>
+    </div> -->
+</div>
+
+
+{% endblock %}
+
+{% block content %}
+
+<div class="section mt-4">
+    <div class="profile-head">
+        <div class="avatar {% if story %} story-indicator {% endif %}">
+            <a href="#" data-bs-toggle="modal" data-component="stories" data-time="5000" data-bs-target="#StoriesModal">
+                {% if user.profile_picture %}
+                    <img src="media/{{ user.profile_picture }}" alt="avatar" class="imaged w64 rounded">
+                {% else %}
+                    <img src="{% static 'assets/img/sample/avatar/avatar3.jpg' %}" alt="avatar" class="imaged w64 rounded">
+                    
+                {% endif %}
+            </a>
+        </div>
+        <div class="in">
+            <h3 class="name">{{ user.name }}</h3>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade stories" id="StoriesModal" data-bs-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- <div class="story-bar"></div> -->
+            <div class="story-image">
+                <img src="media/{{story.file}}" alt="image">
+            </div>
+            <div class="modal-header">
+                <a href="#" class="profile-detail">
+                    {% if user.profile_picture %}
+                        <img src="media/{{ user.profile_picture }}" alt="avatar" class="imaged w36 rounded me-1">
+                    {% else %}
+                        <img src="{% static 'assets/img/sample/avatar/avatar1.jpg' %}" alt="avatar" class="imaged w36 rounded me-1">
+                    {% endif %}
+                    <div>
+                        <h4>{{ user.name }}</h4>
+                    </div>
+                </a>
+                <a href="#" data-bs-dismiss="modal" class="close-stories">
+                    <ion-icon name="close"></ion-icon>
+                </a>
+            </div>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+</div>  
+
+<div class="section mt-2 mb-2">
+    <div class="profile-info">
+
+        {% if user.description %}
+        <div class=" bio" style="text-align: justify;">
+            {{ user.description }}
+        </div>
+        {% else %}
+        <div class=" bio" style="text-align: justify;">
+            hmm... it seems you don't have your bio yet. press here to update <a href="">Click here</a>
+        </div>
+        {% endif %}
+<!--                <div class="link">-->
+<!--                    <a href="#">Paris</a>,-->
+<!--                    <a href="#">France</a>-->
+<!--                </div>-->
+    </div>
+</div>
+
+<div class="section full mt-2 mb-2">
+    <div class="profile-stats ps-2 pe-2">
+        <a href=""></a>
+        <a href="#" class="item">
+            <strong>{{ post_count }}</strong>posts
+        </a>
+        <a href="{% url 'my_profile:followers_list' %}" class="item">
+            <strong>{{ user.follower_count }}</strong>followers
+        </a>
+        <a href="{% url 'my_profile:followings_list' %}" class="item">
+            <strong>{{ user.following_count }}</strong>following
+        </a>
+        <a href=""></a>
+    </div>
+</div>
+
+<div class="section full">
+    <div class="wide-block transparent p-0">
+        <ul class="nav nav-tabs lined iconed" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#feed" role="tab">
+                    <ion-icon name="grid-outline"></ion-icon>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#bookmarks" role="tab">
+                    <ion-icon name="bookmark-outline"></ion-icon>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#settings" role="tab">
+                    <ion-icon name="settings-outline"></ion-icon>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!-- tab content -->
+<div class="section full mb-2">
+            <div class="tab-content">
+
+                <!-- feed -->
+                <div class="tab-pane fade show active" id="feed" role="tabpanel">
+                    <div class="mt-2 p-2 pt-0 pb-0">
+                        <div class="row">
+
+                            {% for post in posts %}
+
+                            <div class="col-4 mb-2">
+                                <a href="{% url 'explore:scroll_post' post.id|slugify %}">
+                                    <img src="media/{{ post.file_1 }}" alt="image" class="imaged w-100 h-100">
+                                </a>
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- * feed -->
+
+                <!-- * friends -->
+                <div class="tab-pane fade" id="friends" role="tabpanel">
+                    <ul class="listview image-listview flush transparent pt-1">
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar3.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Edward Lindgren
+                                        <div class="text-muted">532 followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar2.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Emelda Scandroot
+                                        <div class="text-muted">120k followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar5.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Henry Bove
+                                        <div class="text-muted">920k followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar4.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Ava Gregoraci
+                                        <div class="text-muted">5092 followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar6.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Emmy Elsner
+                                        <div class="text-muted">92 followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar7.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Lisanne Viscaal
+                                        <div class="text-muted">893 followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="item">
+                                <img src="{% static 'assets/img/sample/avatar/avatar10.jpg' %}" alt="image" class="image">
+                                <div class="in">
+                                    <div>
+                                        Cecilia Pozo
+                                        <div class="text-muted">51k followers</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- * friends -->
+
+                <!--  bookmarks -->
+                <div class="tab-pane fade" id="bookmarks" role="tabpanel">
+                    <ul class="listview image-listview media flush transparent pt-1">
+                        {% for category in category_favorites %}
+                            <li>
+                                <a href="{% url 'list_bookmarks:list' category.id %}" class="item">
+                                    <div class="imageWrapper">
+                                        {% if category.favorites_set.exists %}
+                                        <!-- search data from favorite tables based on foreign key (category_id in this case) -->
+                                            {% with first_favorite=category.favorites_set.first %} 
+                                            <!-- grabs the first data of favorite -->
+                                                {% with post=first_favorite.posts_id %}
+                                                <!-- since the favorite data row has posts_id, we grab that value so we can access the file -->
+                                                    <img src="media/{{ post.file_1 }}" alt="image" class="imaged w64">
+                                                {% endwith %}
+                                            {% endwith %}
+                                        {% else %}
+                                            <!-- Default image when no bookmarked posts -->
+                                            <img src="{% static 'assets/img/sample/photo/1.jpg' %}" alt="image" class="imaged w64">
+                                        {% endif %}
+                                    </div>
+                                    <div class="in">
+                                        <div>
+                                            {{ category.name }}
+                                            <div class="text-muted">{{ category.category_count }} post(s)</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+                <!-- * bookmarks -->
+
+                <!-- settings -->
+                <div class="tab-pane fade" id="settings" role="tabpanel">
+                    <ul class="listview image-listview text flush transparent pt-1">
+
+                        <li>
+                            <a href="{% url 'my_profile:edit_profile' %}" class="item">
+                                <div class="in">
+                                    <div>Edit Profile</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'my_profile:change_password' %}" class="item">
+                                <div class="in">
+                                    <div>Change Password</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'my_profile:logout_view' %}" class="item">
+                                <div class="in">
+                                    <div>Logout</div>
+                                </div>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <!-- * settings -->
+            </div>
+        </div>
+<!-- * tab content -->
+
+{% endblock %}
+
+{% block check %} 
+        
+    {% if success %}
+
+    <div id="notification-6" class="notification-box show">
+        <div class="notification-dialog android-style">
+            <div class="notification-header">
+                <div class="in">
+                    <strong>Notification</strong>
+                    <span>just now</span>
+                </div>
+                <a href="#" class="close-button">
+                    <ion-icon name="close" role="img" class="md hydrated" aria-label="close"></ion-icon>
+                </a>
+            </div>
+            <div class="notification-content">
+                <div class="in">
+                    <h3 class="subtitle">{{toast_message}}</h3>
+                    <div class="text">
+                        {{sub_message}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+
+{% endblock %}
+
+{% block app_bottom %}
+
+<div class="appBottomMenu">
+    <a href="{% url 'home:home' %}" class="item">
+        <div class="col">
+            <ion-icon name="home-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="{% url 'explore:explore' %}" class="item">
+        <div class="col">
+            <ion-icon name="search-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="#" class="item" data-bs-toggle="offcanvas" data-bs-target="#actionSheetDefault">
+        <div class="col">
+            <div class="action-button my_act_button large">
+                <ion-icon name="add-outline" role="img" class="md hydrated" aria-label="add outline"></ion-icon>
+            </div>
+        </div>
+    </a>
+    <a href="{% url 'chat:index' %}" class="item">
+        <div class="col">
+            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+        </div>
+    </a>
+    <a href="{% url 'my_profile:profile' %}" class="item">
+        <div class="col">
+            <ion-icon name="person-outline"></ion-icon>
+        </div>
+    </a>
+</div>
+
+<!-- Default Action Sheet -->
+<div class="offcanvas offcanvas-bottom action-sheet" tabindex="-1" id="actionSheetDefault">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Action</h5>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="action-button-list">
+            <!-- <li>
+                <a href="#" class="btn btn-list text-primary" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li> -->
+            <li>
+                <a href="{% url 'explore:create_post' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Post</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'explore:create_story' %}" class="btn btn-list" data-bs-dismiss="offcanvas">
+                    <span>Create Story</span>
+                </a>
+            </li>
+            <li class="action-divider"></li>
+            <li>
+                <a href="#" class="btn btn-list text-danger" data-bs-dismiss="offcanvas">
+                    <span>Close</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- * Default Action Sheet -->
+
+{% endblock %}
+
+{% block js_script %}
+    
+<script>
+    $(document).ready(function() {
+        $('.btn-list').on('click', function() {
+            var url = $(this).attr('href');
+            window.location.href = url;
+        });
+    });
+</script>
+
+{% endblock %}
